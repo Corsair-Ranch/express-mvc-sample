@@ -43,4 +43,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+const db = require("./models");
+db.sequelize.sync()
+    .then(() => {
+      console.log("Synced db.");
+    })
+    .catch((err) => {
+      console.log("Failed to sync db: " + err.message);
+      app.close();
+    });
+
+
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+});
+
 module.exports = app;
